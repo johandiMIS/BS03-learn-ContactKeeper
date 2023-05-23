@@ -1,4 +1,3 @@
-import Contact from '../../components/contacts/Contact'
 import {
     ADD_CONTACT, 
     DELETE_CONTACT,
@@ -9,6 +8,7 @@ import {
     CLEAR_FILTER,
 } from '../types'
 
+/* eslint import/no-anonymous-default-export: [2, {"allowArrowFunction": true}] */
 export default (state, action) => {
     switch(action.type) {
         case ADD_CONTACT: 
@@ -20,6 +20,36 @@ export default (state, action) => {
             return {
                 ...state,
                 contacts:state.contacts.filter(contact => contact.id !== action.payload)
+            }
+        case SET_CURRENT:
+            return {
+                ...state,
+                currentContact:action.payload
+            }
+        case CLEAR_CURRENT:
+            return {
+                ...state,
+                currentContact:null
+            }
+        case UPDATE_CONTACT:
+            return {
+                ...state,
+                contacts:state.contacts.map(
+                    contact => contact.id === action.payload.id? action.payload : contact
+                )
+            }
+        case FILTER_CONTACT:
+            return {
+                ...state,
+                filtered:  state.contacts.filter( contact => {
+                    const regex = new RegExp(`${action.payload}`, 'gi')
+                    return contact.name.match(regex) || contact.email.match(regex) || contact.phone.match(regex)
+                })
+            }
+        case CLEAR_FILTER:
+            return {
+                ...state,
+                filtered:null
             }
         default:
             return state

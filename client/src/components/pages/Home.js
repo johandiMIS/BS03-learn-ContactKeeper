@@ -1,7 +1,7 @@
 import React from 'react'
 import Contact from '../contacts/Contact'
 import ContactForm from '../contacts/ContactForm'
-// import PropTypes from 'prop-types'
+import ContactFilter from '../contacts/ContactFilter'
 
 const Home = props => {
   return (
@@ -10,6 +10,7 @@ const Home = props => {
         <ContactForm/>
       </div>
       <div>
+        <ContactFilter/>
         <Contact/>
       </div>
     </div>
