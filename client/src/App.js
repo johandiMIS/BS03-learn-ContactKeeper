@@ -9,6 +9,11 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import AlertState from './context/alert/AlertState';
 import Alerts from './components/layout/Alerts';
+import setAuthToken from './utils/setAuthToken';
+
+if(localStorage.getItem('token')){
+  setAuthToken(localStorage.getItem('token'))
+}
 
 const App = () => {
   return (
