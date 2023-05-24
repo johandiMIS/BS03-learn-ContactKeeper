@@ -25,50 +25,43 @@ const AuthState = props => {
     const [state, dispatch] = useReducer(authReducer, initialState)
 
     // LOAD USER
-    const loadUser = () =>{
+    const loadUser = async () =>{
         if(localStorage.getItem('token')){
             setAuthToken(localStorage.getItem('token'))
         }
-        Promise.resolve()
-        .then(()=>{
-            axios.get('/api/auth')
-            console.log("2")
-        })
-        .then((res)=>{
+        try{
+            const res = await axios.get('/api/auth',)
             dispatch({
                 type: USER_LOADED,
                 payload:res.data,
             })
-            console.log("3")
-        })
-        .catch(()=>{
+        }catch(err){
             dispatch({
                 type: AUTH_ERROR
             })
-        })
+        }
     }
     // REGISTER USER
-    const register = formData =>{
+    const register = async formData =>{
         const config = {
             Headers: {
                 'Content-Type': 'application/json'
             }
         }
-
-        axios.post('/api/users', formData, config)
-        .then(res =>{
+        try{
+            const res  = await axios.post('/api/users', formData, config)
             dispatch({
                 type: REGISTER_SUCCESS,
                 payload: res.data,
             })
-        })
-        .then( loadUser() )
-        .catch((err)=>{
+            console.log(localStorage.getItem('token'))
+            // loadUser()
+        }catch(err){
             dispatch({
                 type: REGISTER_FAIL,
                 payload: err.response.data.msg,
             })
-        })
+        }
     }
     // LOGIN USER
 
