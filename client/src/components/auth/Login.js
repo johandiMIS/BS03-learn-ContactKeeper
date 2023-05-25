@@ -56,7 +56,6 @@ const Login = props => {
                 Account <span className='text-primary'>Login</span>
             </h1>
             <form onSubmit={onSubmit}>
-
                 <div className='form-group'>
                     <label htmlFor="email">Email</label>
                     <input type="text" name="email" value={email} onChange={onChange} required/>
