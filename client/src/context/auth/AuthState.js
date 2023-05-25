@@ -23,14 +23,15 @@ const AuthState = props => {
         error: null,
     }
     const [state, dispatch] = useReducer(authReducer, initialState)
-
     // LOAD USER
+
     const loadUser = async () =>{
-        if(localStorage.getItem('token')){
-            setAuthToken(localStorage.getItem('token'))
+        if(localStorage.token){
+            setAuthToken(localStorage.token)
         }
         try{
-            const res = await axios.get('/api/auth',)
+            const res = await axios.get('/api/auth')
+            console.log("load user =>\n", localStorage.token)
             dispatch({
                 type: USER_LOADED,
                 payload:res.data,
@@ -49,13 +50,17 @@ const AuthState = props => {
             }
         }
         try{
-            const res  = await axios.post('/api/users', formData, config)
+            const res  = await axios.post('/api/users', formData, config)           
             dispatch({
                 type: REGISTER_SUCCESS,
                 payload: res.data,
             })
-            console.log(localStorage.getItem('token'))
-            // loadUser()
+
+            // wait REGISTER_SUCCESS dispatch complete set localStorage
+            setTimeout(()=>{
+                loadUser()
+            }, 10)
+
         }catch(err){
             dispatch({
                 type: REGISTER_FAIL,
@@ -82,6 +87,7 @@ const AuthState = props => {
             error: state.error,
             register,
             clearError,
+            loadUser,
         }}>
             {props.children}
         </AuthContext.Provider>

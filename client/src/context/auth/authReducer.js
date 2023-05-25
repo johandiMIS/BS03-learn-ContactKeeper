@@ -13,6 +13,7 @@ import {
 export default (state, action)=>{
     switch(action.type){
         case REGISTER_SUCCESS:
+            console.log("correct => \n", action.payload.token)
             localStorage.setItem('token', action.payload.token)
             return {
                 ...state,
