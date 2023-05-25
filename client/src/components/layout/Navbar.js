@@ -1,29 +1,45 @@
-import React from 'react'
+import React, { Fragment, useContext } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import AuthContext from '../../context/auth/authContext'
 
 const Navbar = ({title, icon}) => {
-  return (
-    <div className='navbar bg-primary'>
-        <h1>
-            <i className={icon}/> {title}
-        </h1>
-        <ul>
+    const authContext = useContext(AuthContext)
+    const {user, isAuthenticated} = authContext
+
+    const authLink =(
+        <Fragment>
             <li>
-                <Link to='/'>Home</Link>
+                Hello, {user && user.name}
             </li>
             <li>
-                <Link to='/about'>About</Link>
+                <a href='#!'>
+                    <i className='fas fa-sign-out-alt'/> <span className='hide-sm'>Logout</span>
+                </a>
             </li>
+        </Fragment>)
+
+    const guestLink = (
+        <Fragment>
             <li>
                 <Link to='/register'>Register</Link>
             </li>
             <li>
                 <Link to='/Login'>Login</Link>
             </li>
-        </ul>
-    </div>
-  )
+        </Fragment>)
+    
+
+    return (
+        <div className='navbar bg-primary'>
+            <h1>
+                <i className={icon}/> {title}
+            </h1>
+            <ul>
+                {isAuthenticated? authLink : guestLink}
+            </ul>
+        </div>
+    )
 }
 
 Navbar.propTypes = {

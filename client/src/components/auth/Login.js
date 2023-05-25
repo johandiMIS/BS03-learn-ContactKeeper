@@ -1,10 +1,31 @@
-import React, { useState } from 'react'
-
+import React, { useContext, useState, useEffect } from 'react'
+import AuthContext from '../../context/auth/authContext'
+import AlertContext from '../../context/alert/alertContext'
+import {useNavigate} from 'react-router-dom'
 const Login = props => {
+    const authContext = useContext(AuthContext)
+    const alertContext = useContext(AlertContext)
+
+    const {login, error, isAuthenticated} = authContext
+    const {setAlert} = alertContext
+
+    const navigate = useNavigate()
+
     const [user, setUser] = useState({
         email:"",
         password:"",
     })
+
+    useEffect(()=>{
+        if(isAuthenticated && authContext.user !== null){
+            navigate('/')
+        }
+        if(error){
+            setAlert(error, 'danger')
+        }
+        // clearError()
+        //eslint-disable-next-line
+    }, [isAuthenticated, authContext.user, error])
 
     const {email, password} = user
 
@@ -17,7 +38,16 @@ const Login = props => {
 
     const onSubmit = (e)=>{
         e.preventDefault()
-        console.log("login submit")
+        if (email === '' || password === ''){
+            setAlert('please fill all field', 'danger')
+        } 
+        else{
+            login({
+                email,
+                password
+            })
+        }
+
     }
 
     return (

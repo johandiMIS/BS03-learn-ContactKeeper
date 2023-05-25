@@ -63,15 +63,43 @@ const AuthState = props => {
 
         }catch(err){
             dispatch({
-                type: REGISTER_FAIL,
+                type: LOGIN_FAIL,
                 payload: err.response.data.msg,
             })
         }
     }
     // LOGIN USER
+    const login = async formData =>{
+        const config = {
+            Headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        try{
+            const res  = await axios.post('/api/auth', formData, config)           
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: res.data,
+            })
 
+            // wait REGISTER_SUCCESS dispatch complete set localStorage
+            setTimeout(()=>{
+                loadUser()
+            }, 10)
+
+        }catch(err){
+            dispatch({
+                type: REGISTER_FAIL,
+                payload: err.response.data.msg,
+            })
+        }
+    }
     // LOGOUT
-
+    const logout = () =>{
+        dispatch({
+            type: LOGOUT
+        })
+    }
     // CLEAR ERRORS
     const clearError = ()=>{
         dispatch({
@@ -88,6 +116,8 @@ const AuthState = props => {
             register,
             clearError,
             loadUser,
+            login,
+            logout,
         }}>
             {props.children}
         </AuthContext.Provider>

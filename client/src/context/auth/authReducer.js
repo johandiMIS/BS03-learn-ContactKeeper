@@ -12,6 +12,7 @@ import {
 /* eslint import/no-anonymous-default-export: [2, {"allowArrowFunction": true}] */
 export default (state, action)=>{
     switch(action.type){
+        case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
             console.log("correct => \n", action.payload.token)
             localStorage.setItem('token', action.payload.token)
@@ -23,6 +24,7 @@ export default (state, action)=>{
             }
         case REGISTER_FAIL:
         case AUTH_ERROR:
+        case LOGIN_FAIL:
             localStorage.removeItem('token')
             return {
                 ...state,
@@ -39,10 +41,6 @@ export default (state, action)=>{
                 loading:false,
                 user:action.payload,
             }
-        case LOGIN_SUCCESS:
-            return null
-        case LOGIN_FAIL:
-            return null
         case LOGOUT:
             return null
         case CLEAR_ERRORS:
