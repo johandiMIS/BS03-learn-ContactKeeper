@@ -7,7 +7,9 @@ const Home = props => {
   const authContext = useContext(AuthContext)
   const {loadUser} = authContext
   useEffect(()=>{
-    loadUser()
+    if(localStorage.getItem('token') !== null){
+      loadUser()
+    }
     // eslint-disable-next-line
   },[])
   return (

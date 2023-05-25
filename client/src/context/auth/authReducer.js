@@ -14,7 +14,6 @@ export default (state, action)=>{
     switch(action.type){
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
-            console.log("correct => \n", action.payload.token)
             localStorage.setItem('token', action.payload.token)
             return {
                 ...state,
@@ -42,8 +41,6 @@ export default (state, action)=>{
                 loading:false,
                 user:action.payload,
             }
-        case LOGOUT:
-            return null
         case CLEAR_ERRORS:
             return {
                 ...state,
