@@ -12,6 +12,8 @@ import {
      CLEAR_FILTER,
      CONTACT_ERROR,
      GET_CONTACT,
+     CLEAR_CONTACT,
+     SET_LOADING,
 } from '../types'
 
 const ContactState = props => {
@@ -19,12 +21,13 @@ const ContactState = props => {
         contacts: [],
         currentContact: null,
         filtered: null,
+        loading:true,
     }
 
     const [state, dispatch] = useReducer(contactReducer, initialState)
 
     // add contact
-    const addContact = async contact => {
+    const addContact = async contact => {   
         const config = {
             Headers: {
                 'Content-Type': 'application/json'
@@ -39,6 +42,9 @@ const ContactState = props => {
     }
     // get contact
     const getContact = async ()=>{
+        setTimeout(()=>{
+            
+        }, 1000)
         try{
             const res = await axios.get('/api/contact')
             dispatch({type: GET_CONTACT, payload: res.data})
@@ -86,12 +92,20 @@ const ContactState = props => {
     const clearFilter = () => {
         dispatch({type: CLEAR_FILTER})
     }
+    // clear contact
+    const clearContact = ()=>{
+        dispatch({type:CLEAR_CONTACT})
+    }
+    const setLoading = state =>{
+        dispatch({type:SET_LOADING, payload:state})
+    }
     return (
         <ContactContext.Provider value={{
             contacts:state.contacts,
             currentContact:state.currentContact,
             error: state.error,
             filtered:state.filtered,
+            loading: state.loading,
             addContact,
             deleteContact,
             setCurrent,
@@ -100,6 +114,8 @@ const ContactState = props => {
             filterContact,
             clearFilter,
             getContact,
+            clearContact,
+            setLoading,
         }}>
             {props.children}
         </ContactContext.Provider>

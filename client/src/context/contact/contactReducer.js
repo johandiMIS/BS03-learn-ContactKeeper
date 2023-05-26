@@ -8,6 +8,8 @@ import {
     CLEAR_FILTER,
     CONTACT_ERROR,
     GET_CONTACT,
+    CLEAR_CONTACT,
+    SET_LOADING,
 } from '../types'
 
 /* eslint import/no-anonymous-default-export: [2, {"allowArrowFunction": true}] */
@@ -63,6 +65,16 @@ export default (state, action) => {
             return {
                 ...state,
                 error: action.payload
+            }
+        case CLEAR_CONTACT:
+            return {
+                ...state,
+                contacts: []
+            }
+        case SET_LOADING:
+            return {
+                ...state,
+                loading:action.payload
             }
         default:
             return state

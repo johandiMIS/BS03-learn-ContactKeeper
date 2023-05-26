@@ -2,10 +2,16 @@ import React, { Fragment, useContext } from 'react'
 import ContactContext from '../../context/contact/contactContext';
 import ContactItem from './ContactItem';
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
-
+import Spinner from './../layout/Spinner'
 const Contact = () => {
     const contactContext = useContext(ContactContext)
-    const {contacts, filtered} = contactContext;
+    const {contacts, filtered, loading} = contactContext;
+
+    if(contacts !== null && contacts.length <= 0 && !loading) return <h3>please add contact</h3>
+    else if (contacts !== null && contacts.length <= 0 && loading) {
+        return <Spinner/>
+    }
+
     return (
         <Fragment>
             <TransitionGroup>   
